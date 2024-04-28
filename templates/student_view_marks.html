@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student View Marks</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="bg-white p-4 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-semibold">Welcome, Student!</h2>
+        </div>
+        <div class="space-x-4 flex justify-between items-center">
+            <form action="/dashboard" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Home</button>
+            </form>
+            <form action="/student_joined_courses">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">View Joined Courses</button>
+            </form>
+            <form action="/student_available_courses">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">View Available Courses</button>
+            </form>
+            <form action="/student_view_marks">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">View Marks</button>
+            </form>
+            <form action="/logout">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="max-w-4xl mx-auto py-8 px-4">
+        <h2 class="text-2xl font-semibold mb-4">View Marks</h2>
+        {% if student_marks %}
+        <table class="w-full border-collapse border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2">Course Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Course Code</th>
+                    <th class="border border-gray-300 px-4 py-2">Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mark in student_marks %}
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">{{ mark[0] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ mark[1] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ mark[2] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-gray-600">No marks available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

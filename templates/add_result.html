@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="bg-white p-4 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-semibold">Welcome, Teacher!</h2>
+        </div>
+        <div class="space-x-4 flex justify-between items-center" >
+            <form action="/dashboard" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Home</button>
+            </form>
+            <form action="/manage_courses" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Manage Course Details</button>
+            </form>
+            <!-- <form action="/manage_students" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Manage Student Details</button>
+            </form> -->
+            <form action="/add_result" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Add Student Result</button>
+            </form>
+            <form action="/view_results" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">View Result</button>
+            </form>
+            <form action="/logout">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="max-w-2xl mx-auto py-8 px-4">
+        <h2 class="text-2xl font-semibold mb-4">Add Result</h2>
+        <!-- Form to select a course -->
+        <form id="course_form" class="mb-4">
+            <label for="course_id" class="block mb-2">Select Course:</label>
+            <select id="course_id" name="course_id" onchange="fetchStudents()" class="border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-400 focus:ring focus:ring-blue-400 w-full">
+                <option value="">Select a course</option>
+                {% for course in courses %}
+                <option value="{{ course[0] }}">{{ course[1] }} - {{ course[2] }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <!-- Form to add student result -->
+        <form id="result_form" action="/submit_result" method="POST" style="display:none;">
+            <!-- Hidden input field to store the course_id -->
+            <input type="hidden" id="course_id_hidden" name="course_id">
+            
+            <div class="mb-4">
+                <label for="student_id" class="block mb-2">Select Student:</label>
+                <select id="student_id" name="student_id" required class="border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-400 focus:ring focus:ring-blue-400 w-full">
+                    <!-- Student options will be populated dynamically -->
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="marks" class="block mb-2">Marks:</label>
+                <input type="number" id="marks" name="marks" required class="border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-400 focus:ring focus:ring-blue-400 w-full">
+            </div>
+            <input type="submit" value="Submit Result" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
+        </form>
+    </div>
+
+    <script>
+        function fetchStudents() {
+            var course_id = document.getElementById("course_id").value;
+            console.log(course_id);
+            if (course_id !== "") {
+                // Store the selected course_id in the hidden input field
+                document.getElementById("course_id_hidden").value = course_id;
+                
+                // Fetch students who have joined the selected course via AJAX
+                fetch(`/get_students?course_id=${course_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    var studentSelect = document.getElementById("student_id");
+                    studentSelect.innerHTML = "";
+                    data.forEach(student => {
+                        var option = document.createElement("option");
+                        option.value = student[0];
+                        option.text = student[1];
+                        studentSelect.appendChild(option);
+                    });
+                    // Show the result form
+                    document.getElementById("result_form").style.display = "block";
+                })
+                .catch(error => console.error('Error fetching students:', error));
+            } else {
+                // Hide the result form if no course is selected
+                document.getElementById("result_form").style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

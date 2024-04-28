@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="bg-white p-4 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-semibold">Welcome, Teacher!</h2>
+        </div>
+        <div class="space-x-4 flex justify-between items-center" >
+            <form action="/dashboard" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Home</button>
+            </form>
+            <form action="/manage_courses" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Manage Course Details</button>
+            </form>
+            <!-- <form action="/manage_students" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Manage Student Details</button>
+            </form> -->
+            <form action="/add_result" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Add Student Result</button>
+            </form>
+            <form action="/view_results" method="GET">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">View Result</button>
+            </form>
+            <form action="/logout">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Logout</button>
+            </form>
+        </div>
+    </div>
+    <div class="max-w-2xl mx-auto py-8 px-4">
+        <h2 class="text-2xl font-semibold mb-4">View Results</h2>
+        <!-- Display student results from the database -->
+        <table class="w-full border-collapse border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2">Student Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Course</th>
+                    <th class="border border-gray-300 px-4 py-2">Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">{{ result[0] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ result[1] }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ result[2] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
